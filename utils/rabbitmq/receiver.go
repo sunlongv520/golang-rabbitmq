@@ -497,14 +497,29 @@ func SendDelay(queueExchange QueueExchange,msg string,ttl int64)(err error){
 /*
 runNums  开启并发执行任务数量
  */
-func Recv(queueExchange QueueExchange,receiver Receiver,runNums int,maxTryConnTimeFromMinute int) (err error){
+func Recv(queueExchange QueueExchange,receiver Receiver,otherParams ...int) (err error){
 	var (
 		exitTask bool
 		maxTryConnNums int  //rbmq链接失败后多久尝试一次
+		runNums int
+		maxTryConnTimeFromMinute int
 	)
+
+	if(len(otherParams) <= 0){
+		runNums = 1
+		maxTryConnTimeFromMinute = 0
+	}else if(len(otherParams) == 1){
+		runNums = otherParams[0]
+		maxTryConnTimeFromMinute = 0
+	}else if(len(otherParams) == 2){
+		runNums = otherParams[0]
+		maxTryConnTimeFromMinute = otherParams[1]
+	}
+
+
 	//maxTryConnNums := 360 //rbmq链接失败后最大尝试次数
 	//maxTryConnTime := time.Duration(10) //rbmq链接失败后多久尝试一次
-	maxTryConnNums = maxTryConnTimeFromMinute * 10//rbmq链接失败后最大尝试次数
+	maxTryConnNums = maxTryConnTimeFromMinute * 10 * maxTryConnTimeFromMinute//rbmq链接失败后最大尝试次数
 	maxTryConnTime := time.Duration(6) //rbmq链接失败后多久尝试一次
 	mq := NewMq(queueExchange)
 	//链接rabbitMQ

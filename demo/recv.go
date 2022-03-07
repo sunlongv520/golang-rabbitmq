@@ -53,9 +53,7 @@ func main() {
 		"direct",
 		"amqp://guest:guest@192.168.1.169:5672/",
 	},
-	processTask,
-	1,
-	30)
+	processTask,4,2)
 	if(err != nil){
 		fmt.Println(err)
 	}
