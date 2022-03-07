@@ -501,8 +501,8 @@ func Recv(queueExchange QueueExchange,receiver Receiver,runNums int) (err error)
 	var exitTask bool
 	//maxTryConnNums := 360 //rbmq链接失败后最大尝试次数
 	//maxTryConnTime := time.Duration(10) //rbmq链接失败后多久尝试一次
-	maxTryConnNums := 3 //rbmq链接失败后最大尝试次数
-	maxTryConnTime := time.Duration(5) //rbmq链接失败后多久尝试一次
+	maxTryConnNums := 300 //rbmq链接失败后最大尝试次数
+	maxTryConnTime := time.Duration(10) //rbmq链接失败后多久尝试一次
 	mq := NewMq(queueExchange)
 	//链接rabbitMQ
 	err = mq.MqConnect()
