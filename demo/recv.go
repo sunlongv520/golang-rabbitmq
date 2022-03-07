@@ -40,20 +40,11 @@ func (t *RecvPro) FailAction(err error,dataByte []byte) error {
 
 
 func main() {
-	t := &RecvPro{}
-
-
-
-	//rabbitmq.Recv(rabbitmq.QueueExchange{
-	//	"a_test_0001",
-	//	"a_test_0001",
-	//	"",
-	//	"",
-	//	"amqp://guest:guest@192.168.2.232:5672/",
-	//},t,5)
+	processTask := &RecvPro{}
 
 	/*
 		runNums: 表示任务并发处理数量  一般建议 普通任务1-3    就可以了
+		maxTryConnTimeFromMinute:表示最大尝试时间  分钟
 	 */
 	err := rabbitmq.Recv(rabbitmq.QueueExchange{
 		"a_test_0001",
@@ -61,7 +52,10 @@ func main() {
 		"hello_go",
 		"direct",
 		"amqp://guest:guest@192.168.1.169:5672/",
-	},t,1)
+	},
+	processTask,
+	1,
+	30)
 	if(err != nil){
 		fmt.Println(err)
 	}
